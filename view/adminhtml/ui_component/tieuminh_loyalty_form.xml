@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">tieuminh_loyalty_form.tieuminh_loyalty_form_data_source</item>
+            <item name="deps" xsi:type="string">tieuminh_loyalty_form.tieuminh_loyalty_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Loyalty Information</item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">loyalty_save_form</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <!--action button-->
+    <settings>
+        <buttons>
+            <button name="save" class="TieuMinh\Loyalty\Block\Adminhtml\Button\Loyalty\SaveButton"/>
+            <button name="delete" class="TieuMinh\Loyalty\Block\Adminhtml\Button\Loyalty\DeleteButton"/>
+            <button name="back" class="TieuMinh\Loyalty\Block\Adminhtml\Button\Loyalty\BackButton"/>
+        </buttons>
+        <deps>
+            <dep>tieuminh_loyalty_form.tieuminh_loyalty_form_data_source</dep>
+        </deps>
+    </settings>
+    <!--action button-->
+    <!--data source-->
+    <dataSource name="tieuminh_loyalty_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">TieuMinh\Loyalty\Ui\Component\DataProvider\LoyaltyForm</argument>
+            <argument name="name" xsi:type="string">tieuminh_loyalty_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">rule_id</argument>
+            <argument name="requestFieldName" xsi:type="string">rule_id</argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+                <item name="submit_url" xsi:type="url" path="loyalty/loyalty/save"/>
+            </item>
+        </argument>
+    </dataSource>
+    <!--data source-->
+    <!--general field set-->
+    <fieldset name="fieldset_group">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">General</item>
+                <item name="collapsible" xsi:type="boolean">true</item>
+                <item name="opened" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+        <!--field name-->
+        <field name="name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Rule Name</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <!--field name-->
+        <!--field status-->
+        <field name="status" sortOrder="10" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Active</label>
+                <dataScope>status</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <!--field status-->
+        <!--field website-->
+        <field name="website_ids" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">catalog_rule</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <tooltip>
+                    <link>https://docs.magento.com/m2/ce/user_guide/configuration/scope.html</link>
+                    <description>What is this?</description>
+                </tooltip>
+                <label translate="true">Websites</label>
+                <dataScope>website_ids</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="TieuMinh\Loyalty\Ui\Component\Listing\Columns\Website"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <!--field website -->
+        <!--field customer group -->
+        <field name="customer_group_ids" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">loyalty_rule</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Customer Groups</label>
+                <dataScope>customer_group_ids</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="TieuMinh\Loyalty\Ui\Component\Listing\Columns\CustomerGroupsOptionsProvider"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <!--field customer group -->
+        <!--field priority-->
+        <field name="piority">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Priority</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <!--field priority-->
+        <!--field apply from-->
+        <field name="apply_from" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="options" xsi:type="array">
+                        <item name="showsTime" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="source" xsi:type="string">apply_from</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>timestamp</dataType>
+                <label translate="true">Apply From</label>
+                <visible>true</visible>
+                <dataScope>apply_from</dataScope>
+            </settings>
+        </field>
+        <!--field apply from-->
+        <!--field apply to-->
+        <field name="apply_to" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="options" xsi:type="array">
+                        <item name="showsTime" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="source" xsi:type="string">apply_to</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>timestamp</dataType>
+                <label translate="true">Apply to</label>
+                <visible>true</visible>
+                <dataScope>apply_to</dataScope>
+            </settings>
+        </field>
+        <!--field apply to-->
+    </fieldset>
+    <!--general field set-->
+    <!--condition field set-->
+    <fieldset name="condition">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string">Condition</item>
+                <item name="collapsible" xsi:type="boolean">true</item>
+                <item name="opened" xsi:type="boolean">false</item>
+            </item>
+        </argument>
+        <!--field minimum amount-->
+        <field name="minimum_amount">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Minimum Amount</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <!--field minimum amount-->
+    </fieldset>
+    <!--condition field set-->
+    <fieldset name="action">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string">Action</item>
+                <item name="collapsible" xsi:type="boolean">true</item>
+                <item name="opened" xsi:type="boolean">false</item>
+            </item>
+        </argument>
+        <!--field select loyalty rule-->
+        <field name="loyalty rule" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">loyalty_rule</item>
+                </item>
+            </argument>
+            <settings>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>by_fixed</value>
+                            <actions>
+                                <action name="0">
+                                    <target>tieuminh_loyalty_form.tieuminh_loyalty_form.actions.discount_amount</target>
+                                    <callback>setValidation</callback>
+                                    <params>
+                                        <param name="0" xsi:type="string">validate-number-range</param>
+                                        <param name="1" xsi:type="string">0.00-100.00</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>by_percent</value>
+                            <actions>
+                                <action name="0">
+                                    <target>tieuminh_loyalty_form.tieuminh_loyalty_form.actions.discount_amount</target>
+                                    <callback>setValidation</callback>
+                                    <params>
+                                        <param name="0" xsi:type="string">validate-number-range</param>
+                                        <param name="1" xsi:type="string">0.00-100.00</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>by_step</value>
+                            <actions>
+                                <action name="0">
+                                    <target>tieuminh_loyalty_form.tieuminh_loyalty_form.actions.discount_amount</target>
+                                    <callback>setValidation</callback>
+                                    <params>
+                                        <param name="0" xsi:type="string">validate-number-range</param>
+                                        <param name="1" xsi:type="string">0.00-100.00</param>
+                                    </params>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+                <dataType>number</dataType>
+                <label translate="true">Apply</label>
+                <dataScope>rule</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="TieuMinh\Loyalty\Ui\Component\Listing\Columns\SimpleActionOptionsProvider"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <!--field select loyalty rule-->
+        <!--field amount when select fixed amount-->
+        <field name="rule_amount" component="TieuMinh_Loyalty/js/form/element/apply_to_fixed_amount" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">loyalty_rule</item>
+                    <item name="label" xsi:type="string" translate="true">Amount Point</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="default" xsi:type="string">0</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <!--field amount when select fixed amount-->
+        <!--field amount when select by rate amount-->
+        <field name="rule_rate" component="TieuMinh_Loyalty/js/form/element/apply_to_rate_amount" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Conversion rate</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="default" xsi:type="string">0</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <!--field amount when select by rate amount-->
+        <!--field amount when select by step, price X-->
+        <field name="rule_step" component="TieuMinh_Loyalty/js/form/element/apply_to_step" formElement="input">
+            <argument name="data" xsi:type="array" >
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Price X</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="default" xsi:type="string">1</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <!--field amount when select by step, price X-->
+        <!--field amount when select by step, get Y-->
+        <field name="price_step" component="TieuMinh_Loyalty/js/form/element/apply_to_step" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Get Y Points</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="default" xsi:type="string">0</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <!--field amount when select by step, get Y-->
+    </fieldset>
+    <!--condition fieldset-->
+</form>

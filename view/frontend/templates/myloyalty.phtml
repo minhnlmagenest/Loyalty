@@ -1,0 +1,39 @@
+<?php /**
+ * @var \TieuMinh\Loyalty\Block\MyLoyalty\View $block ;
+ */
+$data = $block->getCustomCollection();
+?>
+
+
+<?php if ($data->getSize()): ?>
+<div style="display: flex">
+<h3>Total Earned: <?= $block->totalEarned() ?></h3>
+<h3>_____Total Used: <?= $block->totalUsed() ?></h3>
+<h3>_____Available Point: <?= $block->getBalance() ?></h3>
+</div>
+    <table style="width:100%" border="1">
+        <tr>
+            <th>#Order</th>
+            <th>Action</th>
+            <th>Time</th>
+        </tr>
+            <?php foreach ($data as $item): ?>
+        <tr>
+            <td>#<?= $item->getSalesOrderId() ?></td>
+            <?php if ($item->getTotalSpent() != 0): ?>
+                <td><?= $item->getTotalSpent() ?></td>
+            <?php endif; ?>
+            <?php if ($item->getTotalEarned() != 0): ?>
+                <td><?= $item->getTotalEarned() ?></td>
+            <?php endif; ?>
+            <td><?= $item->getCreatedAt()?>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+    <?php if ($block->getPagerHtml()): ?>
+        <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+    <?php endif ?>
+<?php else: ?>
+    <div class="message info empty"><span><?php echo __('No any record.'); ?></span></div>
+<?php endif ?>

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+   <!-- loyalty rule table-->
+    <table name="loyalty_rule" resource="default" comment="loyalty rule">
+        <column xsi:type="int" name="rule_id" padding="25" identity="true" unsigned="true" nullable="false" comment="entity id of loyaly rule"/>
+        <column xsi:type="varchar" name="name" length="255" nullable="false"/>
+        <column xsi:type="int" name="status" comment="status 0 is enable 1 is diable" nullable="false"/>
+        <column xsi:type="int" name="piority" comment="piority" nullable="true" default="0"/>
+        <column xsi:type="timestamp" name="apply_from" comment="Apply Date From"/>
+        <column xsi:type="timestamp" name="apply_to" comment="Apply Date To"/>
+        <column xsi:type="varchar" name="rule" length="255" comment="rule"/>
+        <column xsi:type="int" name="minimum_amount" padding="25" comment="minimum amount"/>
+        <column xsi:type="int" name="rule_amount" padding="25" comment="rule amount" default="0"/>
+        <column xsi:type="int" name="rule_rate" padding="25" comment="rule rate" default="0"/>
+        <column xsi:type="int" name="rule_step" padding="25" comment="rule step" default="0"/>
+        <column xsi:type="int" name="price_step" padding="25" comment="price_step" default="1"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rule_id"/>
+        </constraint>
+        <index referenceId="TIEUMINH_LOYALTY_NAME" indexType="fulltext">
+            <column name="name"/>
+        </index>
+    </table>
+    <!-- loyalty rule table-->
+    <!-- loyalty customer group table-->
+    <table name="loyalty_customer_group" resource="default" comment="middle table between loyalty and customer group">
+        <column xsi:type="int" name="entity_id" padding="25" identity="true" unsigned="true" nullable="false" comment="entity id of loyaly rule"/>
+        <column xsi:type="int" name="loyalty_id" padding="25" comment="loyalty id from loyalty_rule table"/>
+        <column xsi:type="int" name="customer_group_id" padding="25" comment="customer group id from customer_group table"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+    <!-- loyalty customer group table-->
+    <!-- loyalty website table-->
+    <table name="loyalty_website" resource="default" comment="middle table between loyalty and website">
+        <column xsi:type="int" name="entity_id" padding="25" identity="true" unsigned="true" nullable="false" comment="entity id of loyaly rule"/>
+        <column xsi:type="int" name="loyalty_id" padding="25" comment="loyalty id from loyalty_rule table"/>
+        <column xsi:type="int" name="website_id" padding="25" comment="website id from store_website table"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+    <!-- loyalty website table-->
+    <!-- loyalty history table-->
+    <table name="loyalty_history" resource="default" comment="record of history loyalty">
+        <column xsi:type="int" name="entity_id" identity="true" padding="25" comment="entity of history table" nullable="false"/>
+        <column xsi:type="varchar" name="sales_order_id" length="255" comment="id from sales order table" nullable="false"/>
+        <column xsi:type="int" name="customer_id" padding="25" comment="customer_id" nullable="false"/>
+        <column xsi:type="varchar" name="total_spent" length="255" comment="total point spent" nullable="false" default="0"/>
+        <column xsi:type="varchar" name="total_earned" length="255" comment="total point earned" nullable="false" default="0"/>
+        <column xsi:type="timestamp" name="created_at" comment="date time history create"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+    <!-- loyalty history table-->
+    <!-- point used table-->
+    <table name="quote">
+        <column xsi:type="varchar" name="point_used" length="255" comment="point used" nullable="false" default="0"/>
+    </table>
+    <!-- point used table-->
+    <!-- point used table-->
+    <table name="sales_order">
+        <column xsi:type="varchar" name="point_used" length="25" comment="point used" nullable="false" default="0"/>
+        <column xsi:type="varchar" name="point_earn" length="25" comment="point earn" nullable="false" default="0"/>
+    </table>
+    <!-- point used table-->
+</schema>

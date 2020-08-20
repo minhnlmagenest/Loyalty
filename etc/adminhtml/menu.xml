@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="TieuMinh_Loyalty::loyalty" title="Loyalty" module="TieuMinh_Loyalty" sortOrder="40" resource="TieuMinh_Loyalty::loyalty" parent="Magento_Backend::marketing"/>
+        <add id="TieuMinh_Loyalty::manageLoyalty" title="Manage Loyalty" module="TieuMinh_Loyalty" sortOrder="10" parent="TieuMinh_Loyalty::loyalty" action="loyalty/loyalty/index" resource="TieuMinh_Loyalty::manageLoyalty"/>
+        <add id="TieuMinh_Loyalty::manageCustomers" title="Manage Customers" module="TieuMinh_Loyalty" sortOrder="11" parent="TieuMinh_Loyalty::loyalty" action="loyalty/customer/index" resource="TieuMinh_Loyalty::manageCustomer"/>
+    </menu>
+</config>

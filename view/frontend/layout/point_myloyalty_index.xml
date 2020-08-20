@@ -1,0 +1,9 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="TieuMinh\Loyalty\Block\MyLoyalty\View" name="my_loyalty" template="TieuMinh_Loyalty::myloyalty.phtml" cacheable="false">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

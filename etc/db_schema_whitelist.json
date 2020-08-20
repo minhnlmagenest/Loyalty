@@ -1,0 +1,74 @@
+{
+    "loyalty_rule": {
+        "column": {
+            "entity_id": true,
+            "name": true,
+            "status": true,
+            "piority": true,
+            "apply_from": true,
+            "apply_to": true,
+            "condition": true,
+            "apply_amount": true,
+            "buy_x": true,
+            "rule_id": true,
+            "rule": true,
+            "minimum_amount": true,
+            "rule_amount": true,
+            "rule_rate": true,
+            "rule_step": true,
+            "price_step": true
+        },
+        "index": {
+            "LOYALTY_RULE_NAME": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "loyalty_customer_group": {
+        "column": {
+            "loyalty_id": true,
+            "customer_group_id": true,
+            "entity_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "loyalty_history": {
+        "column": {
+            "entity_id": true,
+            "sales_order_id": true,
+            "total spent": true,
+            "total earned": true,
+            "total_spent": true,
+            "total_earned": true,
+            "customer_id": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "loyalty_website": {
+        "column": {
+            "loyalty_id": true,
+            "website_id": true,
+            "entity_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "quote": {
+        "column": {
+            "point_used": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "point_used": true,
+            "point_earn": true
+        }
+    }
+}

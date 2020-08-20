@@ -1,0 +1,59 @@
+<?php
+/**
+ *   @var \Magento\Framework\View\Element\AbstractBlock $block
+ */
+
+$hasLoyaltyPoint = (bool) ($block->getloyaltyPoint()!=0);
+?>
+
+<div class="block discount"
+     id="block-discount"
+     data-mage-init='{"collapsible":{"active": <?= $hasLoyaltyPoint ? 'true' : 'false' ?>, "openedState": "active", "saveState": false}}'
+>
+    <div class="title" data-role="title">
+        <strong id="block-discount-heading" role="heading" aria-level="2"><?= $block->escapeHtml(__('Apply Point')) ?></strong>
+    </div>
+    <div class="content" data-role="content" aria-labelledby="block-discount-heading">
+        <form id="loyaltyform"
+              name="loyaltyform"
+                  action="<?=$block->escapeUrl($block->getUrl('point/cart/usePoint'))?>"
+              method="post"
+              data-mage-init='{"loyaltyPoint":{"loyaltyPointSelector": "#point",
+                                               "removeLoyaltyPointSelector": "#remove-loyalty",
+                                               "applyButton": "button.action.applypoint",
+                                               "cancelButton": "button.action.cancelpoint"}}'>
+            <div class="fieldset coupon<?= $hasLoyaltyPoint ? ' applied' : '' ?>">
+                <input type="hidden" name="remove" id="remove-loyalty" value="0" />
+                <div class="field">
+                    <label for="point" class="label"><span><?= $block->escapeHtml(__('Enter apply point')) ?></span></label>
+                    <div class="control">
+                        <input type="number"
+                               class="input-text"
+                               id="point"
+                               name="point"
+                               min="0"
+                               value="<?= $block->escapeHtmlAttr($block->getLoyaltyPoint()) ?>"
+                               placeholder="<?= $block->escapeHtmlAttr(__('Enter loyalty amount')) ?>"
+                            <?php if ($hasLoyaltyPoint) :?>
+                                disabled="disabled"
+                            <?php endif; ?>
+                        />
+                    </div>
+                </div>
+                <div class="actions-toolbar">
+                    <?php if (!$hasLoyaltyPoint) :?>
+                        <div class="primary">
+                            <button class="action applypoint primary" type="button" value="<?= $block->escapeHtmlAttr(__('Apply Point')) ?>">
+                                <span><?= $block->escapeHtml(__('Apply Point')) ?></span>
+                            </button>
+                        </div>
+                    <?php else :?>
+                        <div class="primary">
+                            <button  type="button" class="action cancelpoint primary" value="<?= $block->escapeHtmlAttr(__('Cancel Point')) ?>"><span><?= $block->escapeHtml(__('Cancel Point')) ?></span></button>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

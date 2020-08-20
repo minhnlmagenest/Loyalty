@@ -1,0 +1,205 @@
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <!--provider setting-->
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">
+               tieuminh_loyalty_listing.tieuminh_loyalty_listing_data_source
+            </item>
+        </item>
+    </argument>
+        <settings>
+            <buttons>
+                <button name="add">
+                    <url path="loyalty/loyalty/create"/>
+                    <class>primary</class>
+                    <label translate="true">Add New Loyalty</label>
+                </button>
+            </buttons>
+            <spinner>spinner_columns</spinner>
+            <deps>
+                <dep>tieuminh_loyalty_listing.tieuminh_loyalty_listing_data_source</dep>
+            </deps>
+        </settings>
+    <!--provider setting-->
+    <!--datasource-->
+    <dataSource name="tieuminh_loyalty_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">rule_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>TieuMinh_Loyalty::loyalty</aclResource>
+        <dataProvider class="TieuMinh\Loyalty\Ui\Component\DataProvider\LoyaltyListing" name="tieuminh_loyalty_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>rule_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <!--datasource-->
+    <!--toolbar setting-->
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls">
+        </columnsControls>
+<!--        <filterSearch name="fulltext"/>-->
+        <!--filter setting-->
+        <filters name="listing_filters">
+            <settings>
+                <templates>
+                    <filters>
+                        <select>
+                            <param name="template" xsi:type="string">ui/grid/filters/elements/ui-select</param>
+                            <param name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</param>
+                        </select>
+                    </filters>
+                </templates>
+            </settings>
+        </filters>
+        <!--filter setting-->
+        <!--massaction-->
+        <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
+            <!--delete action-->
+            <action name="delete">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to delete selected items?</message>
+                        <title translate="true">Delete items</title>
+                    </confirm>
+                    <url path="loyalty/loyalty/massdelete"/>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                </settings>
+            </action>
+            <!--delete action-->
+            <!--change status action-->
+            <action name="0">
+                <settings>
+                    <url path="loyalty/loyalty/loyaltystatus">
+                        <param name="status">1</param>
+                    </url>
+                    <type>publish</type>
+                    <label translate="true">Enable</label>
+                </settings>
+            </action>
+            <action name="1">
+                <settings>
+                    <url path="loyalty/loyalty/loyaltystatus">
+                        <param name="status">0</param>
+                    </url>
+                    <type>draft</type>
+                    <label translate="true">Disable</label>
+                </settings>
+            </action>
+        </massaction>
+        <!--massaction-->
+        <!--pagginng-->
+        <paging name="listing_paging">
+            <settings>
+                <sizesConfig>
+                    <component>Magento_Ui/js/grid/paging/sizes</component>
+                </sizesConfig>
+            </settings>
+        </paging>
+        <!--pagginng-->
+        <!--export csv-->
+<!--        <exportButton class="Magento\Ui\Component\ExportButton" component="Magento_Ui/js/grid/export" displayArea="dataGridActions">-->
+<!--            <settings>-->
+<!--                <options>-->
+<!--                    <option name="cvs" xsi:type="array">-->
+<!--                        <item name="value" xsi:type="string">csv</item>-->
+<!--                        <item name="label" xsi:type="string" translate="true">CSV</item>-->
+<!--                        <item name="url" xsi:type="string">sumup1/export/PostCsv</item>-->
+<!--                    </option>-->
+<!--                </options>-->
+<!--            </settings>-->
+<!--        </exportButton>-->
+        <!--export csv-->
+    </listingToolbar>
+    <!--toolbar setting-->
+    <!--list column-->
+    <columns name="spinner_columns">
+        <!--select column-->
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>rule_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <!--select column-->
+        <!--rule id column-->
+        <column name="rule_id">
+            <settings>
+                <editor>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">false</rule>
+                    </validation>
+                    <editorType>text</editorType>
+                </editor>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <!--rule id column-->
+        <!--loyalty rule name column-->
+        <column name="name">
+            <settings>
+                <filter>text</filter>
+                <editor>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <editorType>fulltext</editorType>
+                </editor>
+                <label translate="true">Name</label>
+            </settings>
+        </column>
+        <!--loyalty rule name column-->
+        <!--loyalty status column-->
+        <column name="status" class="TieuMinh\Loyalty\Ui\Component\Listing\Columns\Status">
+            <settings>
+                <editor>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <editorType>text</editorType>
+                </editor>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <!--loyalty status column-->
+        <!--apply from column-->
+        <column name="apply_from" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Apply from</label>
+            </settings>
+        </column>
+        <!--apply from column-->
+        <!--apply to column-->
+        <column name="apply_to" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Apply to</label>
+            </settings>
+        </column>
+        <!--apply to column-->
+        <!--action column-->
+        <actionsColumn name="actions" class="TieuMinh\Loyalty\Ui\Component\Listing\Page\Action">
+            <settings>
+                <indexField>rule_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>107</resizeDefaultWidth>
+            </settings>
+        </actionsColumn>
+        <!--action column-->
+    </columns>
+    <!-- list column-->
+</listing>
