@@ -1,9 +1,9 @@
 <?php
 namespace TieuMinh\Loyalty\Observer;
 
-use TieuMinh\Loyalty\Model\CustomerEntityFactory;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use TieuMinh\Loyalty\Model\CustomerEntityFactory;
 use TieuMinh\Loyalty\Model\LoyaltyCustomerFactory;
 use TieuMinh\Loyalty\Model\LoyaltyHistoryFactory;
 use TieuMinh\Loyalty\Model\LoyaltyRuleFactory;
@@ -59,32 +59,52 @@ class AddPointToBalance implements ObserverInterface
     {
         $order = $observer->getEvent()->getOrder();
 
-        $base_total_paid = $order->getData('base_total_paid');
+        $total_qty_order = $order->getData('total_qty_ordered');
         $base_grand_total = $order->getData('base_grand_total');
+        $base_total_paid = $order->getData('base_total_paid');
+        $status = $order->getData('status');
+        $one_item_price = round($base_grand_total / $total_qty_order);
+        $number_item_invoiced = round($base_total_paid / $one_item_price);
 
-        if ($base_total_paid == null || $base_total_paid == 0 || $base_total_paid < $base_grand_total) {
-            return $this;
-        }
-        if ($base_grand_total == $base_total_paid) {
+
+        if ($total_qty_order - $number_item_invoiced >= 0 && $status != 'pending') {
             $customer = $this->customerFactory->create();
             $customer_id = $order->getData('customer_id');
-            $balance = $customer->getCollection()->getBalance($customer_id) * 1;
-            $balance= (int) $balance;
+
+            $filter_customer = $customer->getCollection()->addFieldToFilter('entity_id', $customer_id);
+
+            foreach ($filter_customer as $value) {
+                $balance = $value->getData('value');
+            }
+
             $point_earn = $order->getData('point_earn');
-            $point_earn = (int) $point_earn;
-            $new_balance = $balance + $point_earn;
-            $customer->getCollection()->updateBalance($new_balance, $customer_id);
+            $each_item_point = round($point_earn / $total_qty_order);
+            $new_balance = $balance + ($number_item_invoiced * $each_item_point);
+            $customer->getCollection()->upDateBalance($new_balance, $customer_id);
+
             $history = $this->loyaltyHistoryFactory->create();
             $order_increment_id = $order->getData('increment_id');
 
             date_default_timezone_set("Asia/Ho_Chi_Minh");
             $current_date = date("Y-m-d H:i:s");
-
-            $history->setData('sales_order_id', $order_increment_id)
-                ->setData('total_earned', "+$point_earn")
-                ->setData('customer_id', $customer_id)
-                ->setData('created_at', $current_date)
-                ->save();
+            $filter_history = $history->getCollection()->addFieldToFilter('sales_order_id', $order_increment_id);
+            if ($filter_history->getItems() != null) {
+                foreach ($filter_history as $value) {
+                    $total_earn = $history->getData('total_earned') + $number_item_invoiced * $each_item_point;
+                    $value->setData('sales_order_id', $order_increment_id)
+                    ->setData('total_earned', "+$total_earn")
+                    ->setData('customer_id', $customer_id)
+                    ->setData('created_at', $current_date)
+                    ->save();
+                }
+            } else {
+                $total_earn = $number_item_invoiced * $each_item_point;
+                $history->setData('sales_order_id', $order_increment_id)
+                    ->setData('total_earned', "+$total_earn")
+                    ->setData('customer_id', $customer_id)
+                    ->setData('created_at', $current_date)
+                    ->save();
+            }
         }
         return $this;
     }

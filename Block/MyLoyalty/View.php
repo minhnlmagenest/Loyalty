@@ -116,7 +116,7 @@ class View extends Template
         $history = $this->loyaltyHistoryCollectionFactory->create();
         $history->addFieldToFilter('customer_id', $customer_id);
         $total_point = 0;
-        foreach ($history as $item) {
+            foreach ($history as $item) {
             $earn = (int) trim($item->getTotalEarned(), '+');
             $total_point = $earn + $total_point;
         }

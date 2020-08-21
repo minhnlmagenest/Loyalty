@@ -329,7 +329,7 @@
         </field>
         <!--field amount when select by rate amount-->
         <!--field amount when select by step, price X-->
-        <field name="rule_step" component="TieuMinh_Loyalty/js/form/element/apply_to_step" formElement="input">
+        <field name="price_step" component="TieuMinh_Loyalty/js/form/element/apply_to_step" formElement="input">
             <argument name="data" xsi:type="array" >
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Price X</item>
@@ -345,7 +345,7 @@
         </field>
         <!--field amount when select by step, price X-->
         <!--field amount when select by step, get Y-->
-        <field name="price_step" component="TieuMinh_Loyalty/js/form/element/apply_to_step" formElement="input">
+        <field name="rule_step" component="TieuMinh_Loyalty/js/form/element/apply_to_step" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Get Y Points</item>

@@ -68,8 +68,8 @@ class SalesEventQuoteSubmitBeforeObserver implements ObserverInterface
                     $rule_infor = $loyaltyRuleFactory->getCollection()->fetchRuleId($data['ruleid']);
                 }
                 //minimum amount condition
-                $grand_total = (int) round($quote->getData('grand_total'));
-                $condition = $grand_total - $rule_infor[0]['minimum_amount'];
+                $subtotal = (int) round($quote->getData('subtotal'));
+                $condition = $subtotal - $rule_infor[0]['minimum_amount'];
                 //apply from <= current date <= apply to
                 date_default_timezone_set("Asia/Ho_Chi_Minh");
                 $current_date = strtotime(date("Y-m-d H:i:s"));
@@ -78,6 +78,7 @@ class SalesEventQuoteSubmitBeforeObserver implements ObserverInterface
 
                 $apply_from_condition = $current_date - $apply_from;
                 $apply_to_condition = $current_date - $apply_to;
+
                 //check condition for minimum amount and time in force
                 if ($apply_from_condition >= 0 && $apply_to_condition <= 0 && $condition >= 0 && $rule_infor[0]['status'] == 1) {
                     //check rule fixed point
@@ -86,13 +87,13 @@ class SalesEventQuoteSubmitBeforeObserver implements ObserverInterface
                         break;
                     //check rule rate point
                     } elseif ($rule_infor[0]['rule'] == 'by_percent') {
-                        $amount = floor(($grand_total * $rule_infor[0]['rule_rate']) / 100);
+                        $amount = floor(($subtotal * $rule_infor[0]['rule_rate']) / 100);
                         $order->setData('point_earn', $amount);
                         break;
                     //check rule point by step
                     } elseif ($rule_infor[0]['rule'] == 'by_step') {
 
-                        $amount = floor(($grand_total / $rule_infor[0]['price_step']) * $rule_infor[0]['rule_step']);
+                        $amount = floor(($rule_infor[0]['rule_step'] / $rule_infor[0]['price_step']) * $subtotal);
                         $order->setData('point_earn', $amount);
                         break;
                     }
